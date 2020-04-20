@@ -1,0 +1,17 @@
+{
+  "name": "connection-monitor",
+  "version": "0.0.0",
+  "description": "CLI tool to monitor connection to multiple addresses",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ping",
+    "connection",
+    "monitor",
+    "cli"
+  ],
+  "author": "Raz Luvaton <rluvaton@gmail.com>",
+  "license": "MIT"
+}
