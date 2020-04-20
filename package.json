@@ -4,6 +4,7 @@
   "description": "CLI tool to monitor connection to multiple addresses",
   "main": "src/index.js",
   "scripts": {
+    "postinstall": "patch-package",
     "start": "node ./src/index",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -14,5 +15,10 @@
     "cli"
   ],
   "author": "Raz Luvaton <rluvaton@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "is-ip": "^3.1.0",
+    "patch-package": "^6.2.2",
+    "ping": "0.2.3"
+  }
 }

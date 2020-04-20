@@ -1,0 +1,120 @@
+diff --git a/node_modules/ping/lib/parser/base.js b/node_modules/ping/lib/parser/base.js
+index 53ac9b1..791fbfd 100644
+--- a/node_modules/ping/lib/parser/base.js
++++ b/node_modules/ping/lib/parser/base.js
+@@ -141,6 +141,38 @@ parser.prototype.eat = function (line) {
+ 
+     return this;
+ };
++/**
++ * Get a line type
++ * @param {string} line - A line from system ping
++ * @return {number} - the line type
++ */
++parser.prototype.getLineType = function (line) {
++    var headerStates = [
++        this.STATES.INIT,
++        this.STATES.HEADER,
++    ];
++
++    // Strip all space \r\n at the end
++    var _line = line.replace(this._stripRegex, '');
++
++    if (_line.length === 0) {
++        // Do nothing if this is an empty line
++        return 0;
++    } else if (headerStates.indexOf(this._state) >= 0) {
++        return 1;
++    } else if (this._state === this.STATES.BODY) {
++        return 2;
++    } else if (this._state === this.STATES.FOOTER) {
++        return 3;
++    } else if (this._state === this.STATES.END) {
++        return 4;
++        // Do nothing
++    } else {
++        throw new Error('Unknown state');
++    }
++
++    return -1;
++};
+ 
+ /**
+  * Get results after parsing certain lines from system ping
+@@ -153,7 +185,7 @@ parser.prototype.getResult = function () {
+     ret.output = this._lines.join('\n');
+ 
+     // Determine alive
+-    ret.alive = this._times.length > 0;
++    ret.alive = !this.hasError;
+ 
+     // Update time at first successful line
+     if (ret.alive) {
+@@ -161,6 +193,21 @@ parser.prototype.getResult = function () {
+         ret.times = this._response.times = this._times;
+     }
+ 
++    if (this._state === this.STATES.BODY) {
++        const additionalResultData = {};
++
++        if (ret.alive) {
++            additionalResultData.time = this._times[this._times.length - 1];
++        } else {
++            additionalResultData.error = {response: this._lines[this._lines.length - 1]};
++        }
++
++        return {
++            isAlive: ret.alive,
++            ...additionalResultData
++        };
++    }
++
+     // Get stddev
+     if (
+         ret.stddev === 'unknown' && ret.alive
+diff --git a/node_modules/ping/lib/parser/win.js b/node_modules/ping/lib/parser/win.js
+index 7a771f7..ec8f327 100644
+--- a/node_modules/ping/lib/parser/win.js
++++ b/node_modules/ping/lib/parser/win.js
+@@ -101,30 +101,23 @@ WinParser.prototype._processIPV6Body = function (line) {
+  */
+ WinParser.prototype._processIPV4Body = function (line) {
+     var tokens = line.split(' ');
+-    var byteTimeTTLFields = __.filter(tokens, function (token) {
+-        var isDataField = token.indexOf('=') >= 0 || token.indexOf('<') >= 0;
+-        return isDataField;
+-    });
++    var byteTimeTTLFields = __.filter(tokens, (token) => token.indexOf('=') >= 0 || token.indexOf('<') >= 0);
+ 
+-    var expectDataFieldInReplyLine = 3;
+-    var isReplyLine = byteTimeTTLFields.length >= expectDataFieldInReplyLine;
+-    if (isReplyLine) {
+-        var packetSize = this._pingConfig.packetSize;
+-        var byteField = __.find(byteTimeTTLFields, function (dataField) {
+-            var packetSizeToken = util.format('=%d', packetSize);
+-            var isByteField = dataField.indexOf(packetSizeToken) >= 0;
+-            return isByteField;
+-        });
++    const pingResultFields = {};
++    byteTimeTTLFields.map((field) => field.split('='))
++        .forEach(([key, value]) => pingResultFields[key] = isNaN(value) ? value : parseFloat(value));
+ 
+-        // XXX: Assume time field will always be next of byte field
+-        var byteFieldIndex = byteTimeTTLFields.indexOf(byteField);
+-        var timeFieldIndex = byteFieldIndex + 1;
+-        var timeKVP = byteTimeTTLFields[timeFieldIndex];
++    var isSuccessReplyLine = byteTimeTTLFields.length > 0;
++    if (isSuccessReplyLine) {
++        this.hasError = false;
++        var packetSize = pingResultFields.bytes;
+ 
+         var regExp = /([0-9.]+)/;
+-        var match = regExp.exec(timeKVP);
++        var match = regExp.exec(pingResultFields.time);
+ 
+         this._times.push(parseFloat(match[1], 10));
++    } else {
++        this.hasError = true;
+     }
+ };
+ 
