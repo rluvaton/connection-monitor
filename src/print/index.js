@@ -131,13 +131,16 @@ TablePrint.prototype.refresh = function () {
 }
 
 
-TablePrint.prototype.update = function (row, col, value) {
+TablePrint.prototype.update = function (row, col, value, refresh = true) {
     if (this._table[row][col] === value) {
         // Don't refresh for nothing
-        return;
+        return false;
     }
     this._table[row][col] = value;
-    this.refresh();
+    if (refresh) {
+        this.refresh();
+    }
+    return true;
 }
 
 module.exports = TablePrint;

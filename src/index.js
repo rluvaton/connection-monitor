@@ -1,15 +1,7 @@
-const {Ping, EVENTS} = require('./ping/');
+const {run} = require('./run');
 
-
-const ip = '192.168.1.1';
-const target = new Ping(ip);
-
-target.pingData.on(EVENTS.DATA, ({isAlive, time, error}) => {
-    console.log(isAlive, isAlive ? `time took is ${time}ms` : `Error ${JSON.stringify(error)}`)
-});
-
-target.pingData.on(EVENTS.ERROR, (err) => {
-    console.error('error for ip', {ip, err})
-});
-
-target.run();
+run([
+    {name: 'Router', ip: '192.168.1.1', isAlive: false},
+    {name: 'Home Server', ip: '192.168.1.16', isAlive: false, comment: 'Ubuntu'},
+    {name: 'Local', ip: '127.0.0.1', isAlive: false, comment: 'Local Host'},
+]);
