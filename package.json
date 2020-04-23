@@ -6,7 +6,7 @@
   "scripts": {
     "postinstall": "patch-package",
     "start": "node ./src/index",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "patch-some-packages": "patch-package ping"
   },
   "keywords": [
