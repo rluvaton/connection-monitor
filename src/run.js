@@ -4,7 +4,7 @@ const {arrToObj} = require('./utils');
 
 const COLUMNS = {
     NAME: {text: 'Name', index: 0, key: 'name', defaultValue: ''},
-    COMMENT: {text: 'Comment', index: 1, key: 'comment', defaultValue: ''},
+    DESCRIPTION: {text: 'Description', index: 1, key: 'description', defaultValue: ''},
     IP: {text: 'IP', index: 2, key: 'ip', defaultValue: ''},
     IS_ALIVE: {text: 'Is Alive', index: 3, key: 'isAlive', defaultValue: false},
     ADDITIONAL_DATA: {text: 'Additional Data', index: 4, key: 'additionalData', defaultValue: ''},

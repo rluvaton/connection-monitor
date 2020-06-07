@@ -19,5 +19,5 @@ module.exports = {
             obj[getKey ? getKey(item) : i] = item;
             return obj;
         }, {});
-    }
+    },
 }
