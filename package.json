@@ -4,8 +4,14 @@
   "description": "CLI tool to monitor connection to multiple addresses",
   "main": "src/index.js",
   "scripts": {
+    "postinstall": "patch-package",
     "start": "node ./src/index",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest",
+    "patch-some-packages": "patch-package ping",
+    "semantic-release": "semantic-release"
+  },
+  "bin": {
+    "connection-monitor": "./bin/cli.js"
   },
   "keywords": [
     "ping",
@@ -14,5 +20,20 @@
     "cli"
   ],
   "author": "Raz Luvaton <rluvaton@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "ajv": "^6.12.2",
+    "chalk": "^4.0.0",
+    "cli-table3": "^0.6.0",
+    "is-ip": "^3.1.0",
+    "parse-json": "^5.0.0",
+    "patch-package": "^6.2.2",
+    "ping": "0.2.3",
+    "yargs": "^15.3.1"
+  },
+  "devDependencies": {
+    "@types/yargs": "^15.0.5",
+    "jest": "^26.0.1",
+    "semantic-release": "^17.0.8"
+  }
 }
