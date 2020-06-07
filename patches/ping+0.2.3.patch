@@ -73,10 +73,10 @@ index 53ac9b1..791fbfd 100644
      if (
          ret.stddev === 'unknown' && ret.alive
 diff --git a/node_modules/ping/lib/parser/win.js b/node_modules/ping/lib/parser/win.js
-index 7a771f7..ec8f327 100644
+index 7a771f7..48ba92b 100644
 --- a/node_modules/ping/lib/parser/win.js
 +++ b/node_modules/ping/lib/parser/win.js
-@@ -101,30 +101,23 @@ WinParser.prototype._processIPV6Body = function (line) {
+@@ -101,30 +101,22 @@ WinParser.prototype._processIPV6Body = function (line) {
   */
  WinParser.prototype._processIPV4Body = function (line) {
      var tokens = line.split(' ');
@@ -96,7 +96,7 @@ index 7a771f7..ec8f327 100644
 -            return isByteField;
 -        });
 +    const pingResultFields = {};
-+    byteTimeTTLFields.map((field) => field.split('='))
++    byteTimeTTLFields.map((field) => field.indexOf('=') >= 0 ? field.split('=') : field.indexOf('<') >= 0 ? field.split('<') : [])
 +        .forEach(([key, value]) => pingResultFields[key] = isNaN(value) ? value : parseFloat(value));
  
 -        // XXX: Assume time field will always be next of byte field
@@ -106,7 +106,6 @@ index 7a771f7..ec8f327 100644
 +    var isSuccessReplyLine = byteTimeTTLFields.length > 0;
 +    if (isSuccessReplyLine) {
 +        this.hasError = false;
-+        var packetSize = pingResultFields.bytes;
  
          var regExp = /([0-9.]+)/;
 -        var match = regExp.exec(timeKVP);

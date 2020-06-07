@@ -1,0 +1,37 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "connectionMonitor": {
+      "description": "Items to ping",
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/MonitorItem"
+      }
+    },
+    "MonitorItem": {
+      "description": "Single Monitor Item to ping (i.e {ip: '192.168.1.1', name: 'Router', description: 'D-Link'})",
+      "title": "MonitorItem",
+      "type": "object",
+      "properties": {
+        "ip": {
+          "description": "The IP to monitor (i.e 192.168.1.1)",
+          "type": "string",
+          "title": "ip"
+        },
+        "name": {
+          "description": "The name of the IP (i.e 'files server') (Optional - recommended)",
+          "type": "string",
+          "title": "name"
+        },
+        "description": {
+          "description": "IP description (i.e 'in different network and contain bla bla') (Optional - recommended)",
+          "type": "string",
+          "title": "description"
+        }
+      },
+      "required": [
+        "ip"
+      ]
+    }
+  }
+}

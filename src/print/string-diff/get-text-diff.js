@@ -46,7 +46,7 @@ module.exports = {
                 result.addToAdd(row, newTextRow.substring(oldTextRow.length), false, oldTextRow.length, newTextRow.length)
             }
 
-            // We loop until the minium of the columns because we already took care of the rest of the line
+            // We loop until the minimum of the columns because we already took care of the rest of the line
             minColsLength = Math.min(oldTextRow.length, newTextRow.length);
             for (let col = 0; col < minColsLength; col++) {
                 if (oldTextRow[col] !== newTextRow[col]) {
