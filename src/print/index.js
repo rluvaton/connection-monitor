@@ -1,4 +1,5 @@
-const Table = require('cli-table3');
+const {table} = require('table');
+const chalk  = require('chalk');
 const {getTextDiff} = require('./string-diff/');
 const {removeAnsiColor} = require('../utils');
 const {TYPES, factory} = require('./print-dest/');
@@ -28,58 +29,58 @@ function TablePrint(matrix, options) {
     // Duplicating the matrix
     this._matrix = matrix.map((row) => row.slice(0));
 
-    this._table = this._createTable({withHeaders, rowLength, withColors, useAsciiChars, useWindowsCMDColors});
-
-    this._table.push(...this._matrix);
+    this._createReadyTableFn = this._createReadyTableFn({withHeaders, rowLength, withColors, useAsciiChars, useWindowsCMDColors});
+    this._setTableWithMatrix();
 
     this._updateTable();
 }
 
-TablePrint.prototype._createTable = function ({withHeaders, rowLength, withColors, useAsciiChars, useWindowsCMDColors}) {
-    const tableOptions = {};
+TablePrint.prototype._setTableWithMatrix = function () {
+    this._table = this._createReadyTableFn(this._matrix);
+}
 
-    if (withHeaders) {
-        tableOptions.head = this._matrix.length >= 1
-            // Remove the first row and return it
-            ? this._matrix.splice(0, 1)[0]
-            : new Array(rowLength).fill('');
-    }
+TablePrint.prototype._createReadyTableFn = function ({withHeaders, rowLength, withColors, useAsciiChars, useWindowsCMDColors}) {
+    const tableOptions = {};
+    let headerStyleFn = header => chalk.bold(chalk.cyan(header));
 
     if (useWindowsCMDColors) {
-        // colors.red('hello')
-        tableOptions.style = {
-            ...tableOptions.style,
-            head: ['cyan', 'bold']
-        }
+        // By default is Windows CMD color
     } else if (!withColors) {
-        tableOptions.style = {
-            ...tableOptions.style,
-            head: [],  // Disable colors in header cells
-            border: [] // Disable colors for the border
-        };
+        headerStyleFn = header => header;
     }
 
     if (useAsciiChars) {
-        tableOptions.chars = {
-            top: '-',
-            'top-mid': '+',
-            'top-left': '+',
-            'top-right': '+',
-            bottom: '-',
-            'bottom-mid': '+',
-            'bottom-left': '+',
-            'bottom-right': '+',
-            left: '|',
-            'left-mid': '+',
-            right: '|',
-            'right-mid': '+',
-            mid: '-',
-            'mid-mid': '+',
-            middle: '|',
+        tableOptions.border = {
+            topBody: '-',
+            topJoin: '+',
+            topLeft: '+',
+            topRight: '+',
+
+            bottomBody: '-',
+            bottomJoin: '+',
+            bottomLeft: '+',
+            bottomRight: '+',
+
+            bodyLeft: '|',
+            bodyJoin: '|',
+            bodyRight: '|',
+
+            joinRight: '+',
+            joinBody: '-',
+            joinJoin: '+',
+            joinLeft: '+',
         };
     }
 
-    return new Table(tableOptions);
+    return (matrix) => {
+        if (withHeaders) {
+            matrix = [
+                matrix[0].map(headerCell => headerStyleFn(headerCell)),
+                ...(matrix.slice(1))
+            ];
+        }
+        return table(matrix, tableOptions);
+    };
 }
 
 /**
@@ -92,7 +93,7 @@ TablePrint.prototype._updateTable = function () {
     const prevTableStr = this._currTableString;
     const prevTableFormattedStr = this._currTableFormattedString;
 
-    this._currTableFormattedString = this._table.toString();
+    this._currTableFormattedString = this._table;
 
     /**
      * The `process.stdout.write` format the ansi colors into colors
@@ -132,11 +133,12 @@ TablePrint.prototype.refresh = function () {
 
 
 TablePrint.prototype.update = function (row, col, value, refresh = true) {
-    if (this._table[row][col] === value) {
+    if (this._matrix[row + 1][col] === value) {
         // Don't refresh for nothing
         return false;
     }
-    this._table[row][col] = value;
+    this._matrix[row + 1][col] = value;
+    this._table = this._createReadyTableFn(this._matrix);
     if (refresh) {
         this.refresh();
     }

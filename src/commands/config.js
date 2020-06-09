@@ -31,7 +31,7 @@ module.exports = async (args) => {
     }
 
     // Patch for error not fully displayed
-    configJson.forEach(item => item.error = '                                                         ');
+    // configJson.forEach(item => item.error = '                                                         ');
 
     run(configJson);
 }
