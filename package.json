@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "postinstall": "patch-package",
-    "start": "node ./src/index",
+    "start": "node ./bin/cli",
     "test": "jest",
     "patch-some-packages": "patch-package ping",
     "semantic-release": "semantic-release"
@@ -17,10 +17,19 @@
     "ping",
     "connection",
     "monitor",
-    "cli"
+    "cli",
+    "nodejs"
   ],
   "author": "Raz Luvaton <rluvaton@gmail.com>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rluvaton/connection-monitor.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rluvaton/connection-monitor/issues/"
+  },
+  "homepage": "https://github.com/rluvaton/connection-monitor",
   "dependencies": {
     "ajv": "^6.12.2",
     "chalk": "^4.0.0",

@@ -1,5 +1,5 @@
 const args = require('./cli');
-const {example: exampleCmd, commands: configCmd} = require('./commands/');
+const {example: exampleCmd, config: configCmd} = require('./commands/');
 
 const start = async () => {
     if(args.e) {
