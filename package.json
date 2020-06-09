@@ -3,16 +3,6 @@
   "version": "0.0.0",
   "description": "CLI tool to monitor connection to multiple addresses",
   "main": "src/index.js",
-  "scripts": {
-    "postinstall": "patch-package",
-    "start": "node ./bin/cli",
-    "test": "jest",
-    "patch-some-packages": "patch-package ping",
-    "semantic-release": "semantic-release"
-  },
-  "bin": {
-    "connection-monitor": "./bin/cli.js"
-  },
   "keywords": [
     "ping",
     "connection",
@@ -30,6 +20,21 @@
     "url": "https://github.com/rluvaton/connection-monitor/issues/"
   },
   "homepage": "https://github.com/rluvaton/connection-monitor",
+  "scripts": {
+    "postinstall": "patch-package",
+    "start": "node ./bin/cli",
+    "test": "jest",
+    "patch-some-packages": "patch-package ping",
+    "semantic-release": "semantic-release"
+  },
+  "bin": {
+    "connection-monitor": "./bin/cli.js"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
   "dependencies": {
     "ajv": "^6.12.2",
     "chalk": "^4.0.0",
@@ -41,7 +46,10 @@
     "yargs": "^15.3.1"
   },
   "devDependencies": {
+    "@commitlint/cli": "^8.3.5",
+    "@commitlint/config-conventional": "^8.3.4",
     "@types/yargs": "^15.0.5",
+    "husky": "^4.2.5",
     "jest": "^26.0.1",
     "semantic-release": "^17.0.8"
   }
