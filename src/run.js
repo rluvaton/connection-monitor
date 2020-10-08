@@ -50,16 +50,16 @@ const startListen = (index, target, columnsObj, tablePrint) => {
         let changed = false;
 
         if (columnsObj[COLUMNS.IS_ALIVE.key]) {
-            changed = changed || tablePrint.update(index, columnsObj[COLUMNS.IS_ALIVE.key].index, isAlive, false);
+            changed = tablePrint.update(index, columnsObj[COLUMNS.IS_ALIVE.key].index, isAlive, false) || changed;
         }
 
         if (columnsObj[COLUMNS.ADDITIONAL_DATA.key]) {
-            changed = changed || tablePrint.update(index, columnsObj[COLUMNS.ADDITIONAL_DATA.key].index, isAlive ? `took ${time}ms` : '', false);
+            changed = tablePrint.update(index, columnsObj[COLUMNS.ADDITIONAL_DATA.key].index, isAlive ? `took ${time}ms` : '', false) || changed;
         }
 
         if (columnsObj[COLUMNS.ERROR.key]) {
             const errorStr = !isAlive && error && typeof error === 'object' ? error.message || error.response : '';
-            changed = changed || tablePrint.update(index, columnsObj[COLUMNS.ERROR.key].index, errorStr, false);
+            changed = tablePrint.update(index, columnsObj[COLUMNS.ERROR.key].index, errorStr, false) || changed;
         }
 
         if (changed) {
