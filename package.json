@@ -36,21 +36,21 @@
     }
   },
   "dependencies": {
-    "ajv": "^6.12.2",
-    "chalk": "^4.0.0",
+    "ajv": "^7.0.3",
+    "chalk": "^4.1.0",
     "is-ip": "^3.1.0",
-    "parse-json": "^5.0.0",
+    "parse-json": "^5.2.0",
     "patch-package": "^6.2.2",
     "ping": "0.2.3",
-    "table": "^5.4.6",
-    "yargs": "^15.3.1"
+    "table": "^6.0.7",
+    "yargs": "^16.2.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "^8.3.5",
-    "@commitlint/config-conventional": "^8.3.4",
-    "@types/yargs": "^15.0.5",
-    "husky": "^4.2.5",
-    "jest": "^26.0.1",
-    "semantic-release": "^17.0.8"
+    "@commitlint/cli": "^11.0.0",
+    "@commitlint/config-conventional": "^11.0.0",
+    "@types/yargs": "^15.0.12",
+    "husky": "^4.3.8",
+    "jest": "^26.6.3",
+    "semantic-release": "^17.3.7"
   }
 }
