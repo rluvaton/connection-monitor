@@ -5,6 +5,7 @@ const os = require('os');
 const events = require('events');
 const readline = require('readline');
 const isIp = require('is-ip');
+const isValidHostname = require('is-valid-hostname')
 
 // ping library
 const builderFactory = require('ping/lib/builder/factory');
@@ -27,15 +28,15 @@ const EVENTS = {
 
 
 function Ping(address, config = {}) {
-    if (!isIp(address)) {
-        throw new Error(`Provided address is not an IP address (${address})`)
+    if (!isValidHostname(address)) {
+        throw new Error(`Provided address is not a valid hostname (${address})`)
     }
 
     this.pingData = new events.EventEmitter();
 
     this._config = config || {};
     this._address = address;
-    this._addressType = isIp.version(address);
+    this._addressType = isIp(address) ? isIp.version(address) : 4;
 }
 
 Ping.prototype.run = function () {
