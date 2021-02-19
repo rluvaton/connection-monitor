@@ -11,7 +11,7 @@
   </a>
 </p>
 
-> No more multiple terminal windows just to ping! use this CLI tool written in NodeJS for monitoring connections using ping and display it in compact way!
+> No more multiple terminal windows just to ping! use this CLI tool written in NodeJS for monitoring connections using ping and display it in a compact way!
 > 
 > (NEW 🌟) Added support to both Linux and Mac
 ### 🏠 [Homepage](https://github.com/rluvaton/connection-monitor)
@@ -23,8 +23,10 @@ npm i connection-monitor -g
 ```
 
 ## Features
-🌟 Support Windows, Mac and Linux (except for Alpine)
+🌟 Support Windows, Mac, and Linux (except for Alpine)
+
 🌟 Print to terminal in table view for compact results
+
 🌟 Real-time table update
 
 ## Usage
