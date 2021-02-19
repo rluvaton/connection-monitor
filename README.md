@@ -23,7 +23,7 @@ npm i connection-monitor -g
 ```
 
 ## Features
-🌟 Support Windows, Mac and Linux
+🌟 Support Windows, Mac and Linux (except for Alpine)
 🌟 Print to terminal in table view for compact results
 🌟 Real-time table update
 

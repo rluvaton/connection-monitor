@@ -56,6 +56,7 @@ Ping.prototype.run = function () {
             pingArgs.push('-t');
         } else {
             // To make it log when having errors
+            // Alpine don't have this flag so this package don't support Alpine Linux
             pingArgs.push('-O');
         }
         const spawnOptions = argumentBuilder.getSpawnOptions();
