@@ -23,8 +23,9 @@
   "scripts": {
     "postinstall": "patch-package",
     "start": "node ./bin/cli",
+    "run:example": "node ./bin/cli -c ./examples/simple.json",
     "test": "jest",
-    "patch-some-packages": "patch-package ping",
+    "update-ping-package-patch": "patch-package ping",
     "semantic-release": "semantic-release"
   },
   "bin": {

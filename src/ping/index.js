@@ -54,6 +54,9 @@ Ping.prototype.run = function () {
         if (builderFactory.isWindow(platform)) {
             // To make it without limit
             pingArgs.push('-t');
+        } else {
+            // To make it log when having errors
+            pingArgs.push('-O');
         }
         const spawnOptions = argumentBuilder.getSpawnOptions();
         ping = cp.spawn(pingExecutablePath, pingArgs, spawnOptions);
@@ -93,7 +96,8 @@ Ping.prototype._listenToPing = function(ping, parser) {
 
         // If still in body body
         if (lineType === 2) {
-            this.pingData.emit(EVENTS.DATA, parser.getResult());
+            const result = parser.getResult();
+            this.pingData.emit(EVENTS.DATA, result);
         }
     });
     rl.on('close', () => {
