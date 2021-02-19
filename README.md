@@ -23,7 +23,7 @@ npm i connection-monitor -g
 ```
 
 ## Features
-🌟 Support Windows, Mac, and Linux (except for Alpine)
+🌟 Support Windows, Mac, and Linux (for using in Alpine run `apk add iputils`)
 
 🌟 Print to terminal in table view for compact results
 
