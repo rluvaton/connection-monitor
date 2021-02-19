@@ -1,0 +1,5 @@
+[
+  {"name": "Google DNS", "ip": "8.8.8.8"},
+  {"name": "CloudFlare DNS", "ip": "1.1.1.1"},
+  {"name": "Home Server", "ip": "192.168.1.16", "description": "Ubuntu"}
+]

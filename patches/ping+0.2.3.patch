@@ -72,6 +72,32 @@ index 53ac9b1..791fbfd 100644
      // Get stddev
      if (
          ret.stddev === 'unknown' && ret.alive
+diff --git a/node_modules/ping/lib/parser/mac.js b/node_modules/ping/lib/parser/mac.js
+index 05ea851..31164ac 100644
+--- a/node_modules/ping/lib/parser/mac.js
++++ b/node_modules/ping/lib/parser/mac.js
+@@ -34,6 +34,21 @@ MacParser.prototype._processHeader = function (line) {
+  * @param {string} line - A line from system ping
+  */
+ MacParser.prototype._processBody = function (line) {
++
++    const isAlive = /no answer yet for icmp_seq=[0-9]+/g.test(line);
++    if(isAlive) {
++        this.hasError = true;
++        return;
++    }
++
++    const isAliveWithMessage = /^From/g.test(line);
++    if(isAliveWithMessage) {
++        this.hasError = true;
++        return;
++    }
++
++    this.hasError = false;
++
+     // XXX: Assume there is at least 3 '=' can be found
+     var count = (line.match(/=/g) || []).length;
+     if (count >= 3) {
 diff --git a/node_modules/ping/lib/parser/win.js b/node_modules/ping/lib/parser/win.js
 index 7a771f7..48ba92b 100644
 --- a/node_modules/ping/lib/parser/win.js
