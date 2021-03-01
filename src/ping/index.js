@@ -78,7 +78,6 @@ Ping.prototype.run = function () {
         }
         const spawnOptions = argumentBuilder.getSpawnOptions();
         ping = cp.spawn(pingExecutablePath, pingArgs, spawnOptions);
-        ping.stdout.on('data', (data) => console.log('>', data.toString()));
     } catch (err) {
         this.pingData.emit(EVENTS.STATE_CHANGE, {state: STATES.ERROR, payload: err});
         this.pingData.emit(EVENTS.ERROR, err);
@@ -108,7 +107,7 @@ Ping.prototype._listenToPing = function (ping, parser) {
         this.pingData.emit(EVENTS.ERROR, err);
     });
 
-    const rl = readline.createInterface(); // {input: ping.stdout}
+    const rl = readline.createInterface({input: ping.stdout});
     rl.on('line', line => {
         const lineType = parser.getLineType(line);
         parser.eat(line);
