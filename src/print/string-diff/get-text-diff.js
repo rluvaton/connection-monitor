@@ -43,7 +43,7 @@ module.exports = {
                 result.addToRemove(row, false, newTextRow.length, oldTextRow.length);
             } else if (newTextRow.length > oldTextRow.length) {
                 // If the NEW line have MORE character that the OLD line we need to ADD the remain characters
-                result.addToAdd(row, newTextRow.substring(oldTextRow.length), false, oldTextRow.length, newTextRow.length)
+                result.addToAdd(row, newTextRow.substring(oldTextRow.length), false, oldTextRow.length, newTextRow.length);
             }
 
             // We loop until the minimum of the columns because we already took care of the rest of the line
@@ -56,7 +56,7 @@ module.exports = {
 
                     endIndex = col + 1;
                 } else if (startIndex === -1) {
-                    // No previous difference 
+                    // No previous difference
                 } else {
                     // Finish the difference
                     result.addToReplace(row, newTextRow.substring(startIndex, endIndex), startIndex, endIndex);
