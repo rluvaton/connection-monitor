@@ -17,7 +17,7 @@ module.exports = async (args) => {
     let configJson;
 
     try {
-        configJson = parseJsonExtended(configFileContent)
+        configJson = parseJsonExtended(configFileContent);
     } catch (error) {
         console.error('Failed parsing config file', error);
         return false;
