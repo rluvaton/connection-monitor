@@ -26,6 +26,17 @@ const EVENTS = {
     ERROR: 'error'
 }
 
+let isSystemUsingPingFromIputils;
+
+function doesSystemUsePingFromIputils() {
+    if (isSystemUsingPingFromIputils === undefined) {
+        const output = cp.execSync('ping -V').toString();
+
+        isSystemUsingPingFromIputils = output.startsWith('ping utility, iputils');
+    }
+
+    return isSystemUsingPingFromIputils;
+}
 
 function Ping(address, config = {}) {
     if (!isValidHostname(address)) {
@@ -55,12 +66,19 @@ Ping.prototype.run = function () {
             // To make it without limit
             pingArgs.push('-t');
         } else {
-            // To make it log when having errors
-            // Alpine don't have this flag so this package don't support Alpine Linux
-            pingArgs.push('-O');
+
+            // Some distros use the `ping` from `inetutils` that doesn't have the `-O` flag.
+            // Therefore couldn't get updates when a ping face some issues (_Destination Host Unreachable_ and etc...) #52
+            //
+            // Alpine (BusyBox) implementation of ping don't have this flag by default
+            // So Alpine users need to install the `iputils` package in order of this package to work
+            if (doesSystemUsePingFromIputils()) {
+                pingArgs.push('-O');
+            }
         }
         const spawnOptions = argumentBuilder.getSpawnOptions();
         ping = cp.spawn(pingExecutablePath, pingArgs, spawnOptions);
+        ping.stdout.on('data', (data) => console.log('>', data.toString()));
     } catch (err) {
         this.pingData.emit(EVENTS.STATE_CHANGE, {state: STATES.ERROR, payload: err});
         this.pingData.emit(EVENTS.ERROR, err);
@@ -77,7 +95,7 @@ Ping.prototype.run = function () {
     return () => ping.kill('SIGINT');
 }
 
-Ping.prototype._listenToPing = function(ping, parser) {
+Ping.prototype._listenToPing = function (ping, parser) {
     ping.once('error', () => {
         const err = new Error(
             util.format(
@@ -90,7 +108,7 @@ Ping.prototype._listenToPing = function(ping, parser) {
         this.pingData.emit(EVENTS.ERROR, err);
     });
 
-    const rl = readline.createInterface({input: ping.stdout});
+    const rl = readline.createInterface(); // {input: ping.stdout}
     rl.on('line', line => {
         const lineType = parser.getLineType(line);
         parser.eat(line);
