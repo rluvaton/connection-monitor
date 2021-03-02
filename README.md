@@ -50,9 +50,11 @@ Examples:
 
 ```json
 [
-  {"name": "Router", "ip": "192.168.1.1"},
-  {"name": "Home Server", "ip": "192.168.1.16", "description": "Ubuntu"},
-  {"name": "Local", "ip": "127.0.0.1", "description": "Local Host"}
+  {"name": "Google DNS", "ip": "8.8.8.8"},
+  {"name": "CloudFlare DNS", "ip": "1.1.1.1"},
+  {"name": "Google", "ip": "google.com"},
+  {"name": "Bing", "ip": "bing.com"},
+  {"name": "Home Server", "ip": "192.168.1.16", "description": "Ubuntu"}
 ]
 ```
 
