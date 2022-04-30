@@ -12,8 +12,6 @@
 </p>
 
 > No more multiple terminal windows just to ping! use this CLI tool written in NodeJS for monitoring connections using ping and display it in a compact way!
-> 
-> (NEW 🌟) Added support to both Linux and Mac
 ### 🏠 [Homepage](https://github.com/rluvaton/connection-monitor)
 
 ## Install
@@ -38,11 +36,15 @@ Options:
   --version      Show version number                                   [boolean]
   -c, --config   JSON config file that have the connection monitor data [string]
   -e, --example  Show an example File                 [boolean] [default: false]
+  -d, --default  Use the default configuration        [boolean] [default: false]
   -h, --help     Show help                                             [boolean]
 
 Examples:
   connection-monitor -c conf.json  Start monitor the connection with the data
                                    from the conf file
+  connection-monitor -d            This will use the default configuration
+                                   for pinging Google & CloudFlare DNS
+                                   and Google & Bing Domains
   connection-monitor -e            Output example config file
 ```
 
