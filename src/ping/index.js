@@ -29,12 +29,15 @@ const EVENTS = {
 let isSystemUsingPingFromIputils;
 
 function doesSystemUsePingFromIputils() {
-    if (isSystemUsingPingFromIputils === undefined) {
-        const output = cp.execSync('ping -V').toString();
+    try {
+        if (isSystemUsingPingFromIputils === undefined) {
+            const output = cp.spawnSync('ping -V').toString();
 
-        isSystemUsingPingFromIputils = output.startsWith('ping utility, iputils');
+            isSystemUsingPingFromIputils = output.startsWith('ping utility, iputils');
+        }
+    } catch {
+        isSystemUsingPingFromIputils = false;
     }
-
     return isSystemUsingPingFromIputils;
 }
 
