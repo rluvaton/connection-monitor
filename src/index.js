@@ -7,10 +7,7 @@ const start = async () => {
         return;
     }
 
-    if(args.c) {
-        await configCmd(args);
-        return;
-    }
+    await configCmd(args);
 }
 
 module.exports = start
