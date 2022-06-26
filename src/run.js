@@ -86,6 +86,11 @@ const run = (targets, {columnsToDisplay} = {columnsToDisplay: columnsSorted.map(
 
     tablePrint.print();
 
+    // Redraw table on terminal resize
+    process.on("SIGWINCH", () => {
+        tablePrint.print();
+    });
+
     const pingTarget = targets.map(({ip}) => new Ping(ip));
 
     pingTarget.forEach((target, index) => startListen(index, target, columnsObj, tablePrint));
